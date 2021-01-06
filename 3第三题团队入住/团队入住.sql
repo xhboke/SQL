@@ -34,6 +34,6 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		SELECT 'ÊäÈë²ÎÊýÓÐÎÊÌâ£¡';
+		SELECT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£¡';
 	END
 END

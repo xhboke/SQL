@@ -1,7 +1,7 @@
 IF (OBJECT_ID('T_CHECKIN', 'tr') IS NOT  NULL)
     DROP TRIGGER T_CHECKIN
 GO
-/** Èë×¡±íµÄ´¥·¢Æ÷ */
+/** ï¿½ï¿½×¡ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ */
 CREATE TRIGGER T_CHECKIN ON CHECKIN
 	FOR INSERT,UPDATE,DELETE
 AS
@@ -9,17 +9,17 @@ AS
 	DECLARE @_B INT;
 	SET @_A = (SELECT COUNT(ROOM_STATUS_ID) FROM ROOM_INFO WHERE ROOM_ID IN (SELECT INSERTED.ROOM_ID FROM INSERTED));
 	SET @_B = (SELECT COUNT(ROOM_STATUS_ID) FROM ROOM_INFO WHERE ROOM_ID IN (SELECT INSERTED.ROOM_ID FROM INSERTED) AND ROOM_STATUS_ID = 1);
-	/** ÅÐ¶ÏÈë×¡µÄ·¿¼ä¾ùÎª¿ÕÏÐ */
+	/** ï¿½Ð¶ï¿½ï¿½ï¿½×¡ï¿½Ä·ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ */
 	IF @_A = @_B 
 	BEGIN
-		/** ¶ÔÓÚ¸üÐÂÐÂµÄÉèÖÃÎª4(Õ¼ÓÃ)£¬¾ÉµÄÉèÖÃÎª1(¿ÕÏÐ) */
-		/** ¶ÔÓÚ²åÈëÉèÖÃÎª4(Õ¼ÓÃ) */
+		/** ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½Îª4(Õ¼ï¿½ï¿½)ï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½Îª1(ï¿½ï¿½ï¿½ï¿½) */
+		/** ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª4(Õ¼ï¿½ï¿½) */
 		UPDATE ROOM_INFO SET ROOM_STATUS_ID = 4 WHERE ROOM_ID IN (SELECT INSERTED.ROOM_ID  FROM INSERTED);
-		/** ¶ÔÓÚ¸üÐÂºÍÉ¾³ýÉèÖÃÎª2(Ô¤Áô) */
+		/** ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½Âºï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª2(Ô¤ï¿½ï¿½) */
 		UPDATE ROOM_INFO SET ROOM_STATUS_ID = 2 WHERE ROOM_ID IN (SELECT DELETED.ROOM_ID  FROM DELETED);
 	END
 	ELSE
 	BEGIN
-		SELECT '²åÈëÊ§°Ü£¡';
+		SELECT 'ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½';
 		ROLLBACK;
 	END

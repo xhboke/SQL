@@ -3,14 +3,14 @@ IF EXISTS (select * from sysobjects where type = 'P' and name = 'P_CHANGE_ROOM')
 GO
 
 CREATE PROCEDURE P_CHANGE_ROOM 
-	@CHECKIN_ID INT, /** Èë×¡ºÅ */
-	@ROOM_ID INT,  /** ×¼±¸¸ü»»µÄ·¿¼äºÅ */
-	@CHANGE_DATE DATE /** ¸ü»»µÄÈÕÆÚ */
+	@CHECKIN_ID INT, /** ï¿½ï¿½×¡ï¿½ï¿½ */
+	@ROOM_ID INT,  /** ×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ */
+	@CHANGE_DATE DATE /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 AS
 BEGIN
-	DECLARE @CHANGE_ID INT;	/** »»·¿±êÊ¶ºÅ */
-	DECLARE @CHANGE_BEFORE_ROOM_ID INT; /** »»·¿Ç°µÄ·¿¼äºÅ */
-	DECLARE @CHANGE_BEFORE_DATE DATE; /** »»·¿Ç°µÄÈë×¡ÈÕÆÚ */
+	DECLARE @CHANGE_ID INT;	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ */
+	DECLARE @CHANGE_BEFORE_ROOM_ID INT; /** ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ */
+	DECLARE @CHANGE_BEFORE_DATE DATE; /** ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½×¡ï¿½ï¿½ï¿½ï¿½ */
 	SET @CHANGE_BEFORE_ROOM_ID = (SELECT ROOM_ID FROM CHECKIN WHERE CHECKIN_ID = @CHECKIN_ID);
 	SET @CHANGE_BEFORE_DATE = (SELECT CHECKIN_START_TIME FROM CHECKIN WHERE CHECKIN_ID = @CHECKIN_ID);
 

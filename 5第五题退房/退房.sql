@@ -19,7 +19,7 @@ CREATE TABLE #Temp
 IF @CHECKIN_ID IN (SELECT CHECKIN_ID FROM CHANGE_ROOM)
 BEGIN
 
-	/** ¼ÆËãµÚÒ»´Î»»·¿Ç°µÄ¼Û¸ñ */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ï¿½Ç°ï¿½Ä¼Û¸ï¿½ */
 	DECLARE @FIRST_BEFORE_ROOM_ID INT;
 	DECLARE @FIRST_AFTER_ROOM_ID INT;
 	DECLARE @FIRST_START_TIME DATE;
@@ -39,7 +39,7 @@ BEGIN
 
 	INSERT INTO #Temp VALUES (CONCAT('[',@FIRST_BEFORE_ROOM_ID,']',@FIRST_START_TIME,'->',@FIRST_AFTER_TIME,'[',@FIRST_AFTER_ROOM_ID,']'),@FIRST_DAY,@FIRST_PRICE);
 
-	/** ¼ÆËã»»·¿ÆÚ¼äÏû·Ñ */
+	/** ï¿½ï¿½ï¿½ã»»ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ */
 	SELECT * INTO #TT
 	FROM
 	(
@@ -67,7 +67,7 @@ BEGIN
 	) AS BBB;
 	
 
-	/** ±éÀú±íÖÐÃ¿Ò»ÐÐ */
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ */
 	DECLARE @i INT;
 	DECLARE @max INT;
 	SET @i = 1;
@@ -99,7 +99,7 @@ BEGIN
 	END
 
 
-	/** ×îºóÒ»´Î»»Íê·¿µ½½á·¿ */
+	/** ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ê·¿ï¿½ï¿½ï¿½á·¿ */
 	DECLARE @LAST_ROOM_ID INT;
 	DECLARE @LAST_START_TIME DATE;
 	DECLARE @LAST_ROOM_PRICE MONEY;
@@ -121,7 +121,7 @@ BEGIN
 END
 ELSE
 BEGIN
-/** Ã»ÓÐ»»·¿ */
+/** Ã»ï¿½Ð»ï¿½ï¿½ï¿½ */
 
 DECLARE @B_ROOM_ID INT;
 
@@ -148,7 +148,7 @@ SET @DAY = DATEDIFF(DD,@B_TIME,@N_TIME);
 INSERT INTO #Temp VALUES (CONCAT('[',@B_ROOM_ID,']',@B_TIME,'->',@N_TIME),@DAY,@N_PRICE);
 END
 
-/** ¸½¼Ó²úÆ· */
+/** ï¿½ï¿½ï¿½Ó²ï¿½Æ· */
 DECLARE @M INT;
 DECLARE @P_MAX INT;
 SET @M = 1;
@@ -177,15 +177,15 @@ BEGIN
 END
 
 
-/** ¼ÆËã×ÜÏû·Ñ */
+/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 DECLARE @_ALL MONEY;
 
 SET @_ALL = (SELECT SUM(#Temp.NUMBER * #Temp.PRICE) FROM #Temp);
-INSERT INTO #Temp VALUES ('[Èë×¡ÌìÊý]',@True_Day,NULL);
-INSERT INTO #Temp VALUES ('[×ÜÏû·Ñ]',1,@_ALL);
+INSERT INTO #Temp VALUES ('[ï¿½ï¿½×¡ï¿½ï¿½ï¿½ï¿½]',@True_Day,NULL);
+INSERT INTO #Temp VALUES ('[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]',1,@_ALL);
 SELECT * FROM #Temp;
 
-/** ¼ÇÂ¼µ½ÍË·¿±í */
+/** ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½ */
 DECLARE @CHECKOUT_MAX_ID INT;
 SET @CHECKOUT_MAX_ID = (SELECT MAX(CHECKOUT_ID) FROM CHECKOUT);
 IF @CHECKOUT_MAX_ID IS NULL
@@ -197,7 +197,7 @@ BEGIN
 	INSERT INTO CHECKOUT VALUES (@CHECKOUT_MAX_ID + 1,@CHECKIN_ID,GETDATE());
 END
 
-/** ¸üÐÂµ½·¿¼äÐÅÏ¢±í×´Ì¬*/
+/** ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½×´Ì¬*/
 UPDATE ROOM_INFO SET ROOM_STATUS_ID = 2 WHERE ROOM_ID = (SELECT ROOM_ID FROM CHECKIN WHERE CHECKIN_ID = @CHECKIN_ID);
 
 END

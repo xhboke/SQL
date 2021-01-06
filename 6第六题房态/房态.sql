@@ -46,25 +46,25 @@ BEGIN
 			BEGIN
 				SET @NOW = GETDATE();
 				DECLARE @SQL VARCHAR(2000);
-				/** Èë×¡±íÐÅÏ¢ */
+				/** ï¿½ï¿½×¡ï¿½ï¿½ï¿½ï¿½Ï¢ */
 				IF (SELECT COUNT(*) FROM CHECKIN WHERE ROOM_ID = @A + @B AND DATEADD(DAY,PLAN_TIME,CHECKIN_START_TIME) >= DATEADD(DD,@F,GETDATE())) = 1 
 				BEGIN
-					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''Õ¼ÓÃ''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''Õ¼ï¿½ï¿½''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
 					EXEC(@SQL);
 				END
-				/** »»·¿ Ô¤ÁôÐÅÏ¢ */ /** Ô¤¶¨ Ô¤ÁôÐÅÏ¢ */
+				/** ï¿½ï¿½ï¿½ï¿½ Ô¤ï¿½ï¿½ï¿½ï¿½Ï¢ */ /** Ô¤ï¿½ï¿½ Ô¤ï¿½ï¿½ï¿½ï¿½Ï¢ */
 				ELSE IF( SELECT COUNT(*) FROM CHANGE_ROOM WHERE BEFORE_ROOM_ID = @A+@B AND CHANGE_TIME >= DATEADD(DD,@F,GETDATE()) ) = 1
 				OR (SELECT COUNT(*) FROM RESERVE WHERE ROOM_ID = @A+@B AND DATEADD(DD,RESERVE_LAST_TIME,RESERVE_START_TIME) >= DATEADD(DD,@F,GETDATE()) ) = 1
 				BEGIN
-					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''Ô¤Áô''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''Ô¤ï¿½ï¿½''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
 					EXEC(@SQL);
 				END
 				
 
-				/** ÆäÓà ¿ÕÏÐÐÅÏ¢ */
+				/** ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
 				ELSE
 				BEGIN
-					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''¿ÕÏÐ''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''ï¿½ï¿½ï¿½ï¿½''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
 					EXEC(@SQL);
 				END
 
@@ -82,6 +82,3 @@ BEGIN
 	SELECT * FROM #Temp;
 
 END
-
-
-

@@ -1,4 +1,4 @@
-/** 生成房间相邻关系的表的存储过程 */
+/** 锟斤拷锟缴凤拷锟斤拷锟斤拷锟节癸拷系锟侥憋拷锟侥存储锟斤拷锟斤拷 */
 if exists (select * from sysobjects where type = 'P' and name = 'saveConnectInfo')
     drop procedure dbo.saveConnectInfo;
 go
@@ -42,5 +42,4 @@ BEGIN
 		SET @b = 1;
 		SET @a = @a + 100;
 	END
-
 END
