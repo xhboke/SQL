@@ -1,0 +1,87 @@
+IF EXISTS (select * from sysobjects where type = 'P' and name = 'FangTai')
+    DROP PROCEDURE FangTai;
+GO
+CREATE PROCEDURE FangTai
+AS
+BEGIN
+	CREATE TABLE #Temp
+	(
+		ShunXu INT,
+		ROOM_ID INT,
+		F0 VARCHAR(4),
+		F1 VARCHAR(4),
+		F2 VARCHAR(4),
+		F3 VARCHAR(4),
+		F4 VARCHAR(4),
+		F5 VARCHAR(4),
+		F6 VARCHAR(4),
+		F7 VARCHAR(4),
+		F8 VARCHAR(4),
+		F9 VARCHAR(4),
+		F10 VARCHAR(4),
+		F11 VARCHAR(4),
+		F12 VARCHAR(4),
+		F13 VARCHAR(4),
+		F14 VARCHAR(4),
+		F15 VARCHAR(4),
+	);
+	DECLARE @A INT;
+	DECLARE @B INT;
+	DECLARE @F INT;
+	DECLARE @NOW DATE;
+	DECLARE @ShunXu INT;
+
+	SET @A = 100;
+	SET @B = 1;
+	SET @F = 0;
+	SET @ShunXu = 1;
+	WHILE ( @A <= (SELECT MAX(ROOM_ID) FROM ROOM_INFO) )
+	BEGIN
+		WHILE( @B <= (SELECT RIGHT(MAX(ROOM_ID),2) FROM ROOM_INFO ))
+		BEGIN
+			INSERT INTO #Temp VALUES(@ShunXu,@A+@B,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+			SET @ShunXu = @ShunXu + 1;
+
+			WHILE( @F <= 15)
+			BEGIN
+				SET @NOW = GETDATE();
+				DECLARE @SQL VARCHAR(2000);
+				/** 入住表信息 */
+				IF (SELECT COUNT(*) FROM CHECKIN WHERE ROOM_ID = @A + @B AND DATEADD(DAY,PLAN_TIME,CHECKIN_START_TIME) >= DATEADD(DD,@F,GETDATE())) = 1 
+				BEGIN
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''占用''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					EXEC(@SQL);
+				END
+				/** 换房 预留信息 */ /** 预定 预留信息 */
+				ELSE IF( SELECT COUNT(*) FROM CHANGE_ROOM WHERE BEFORE_ROOM_ID = @A+@B AND CHANGE_TIME >= DATEADD(DD,@F,GETDATE()) ) = 1
+				OR (SELECT COUNT(*) FROM RESERVE WHERE ROOM_ID = @A+@B AND DATEADD(DD,RESERVE_LAST_TIME,RESERVE_START_TIME) >= DATEADD(DD,@F,GETDATE()) ) = 1
+				BEGIN
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''预留''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					EXEC(@SQL);
+				END
+				
+
+				/** 其余 空闲信息 */
+				ELSE
+				BEGIN
+					SET @SQL = CONCAT('UPDATE #Temp SET F',CAST(@F AS varchar),'=''空闲''','WHERE ROOM_ID = ',CAST((@A+@B) AS varchar) );
+					EXEC(@SQL);
+				END
+
+
+				SET @F = @F + 1;
+			END
+			SET @F = 0;
+			SET @B = @B + 1;
+		END
+		SET @B = 1;
+		SET @A = @A + 100;
+
+
+	END
+	SELECT * FROM #Temp;
+
+END
+
+
+
